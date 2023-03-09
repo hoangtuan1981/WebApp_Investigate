@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -18,12 +19,21 @@ namespace WebApp_Investigate
             Configuration = configuration;
         }
 
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            //ViewLocalizationResource.vi.resx
+            var cultures = new CultureInfo[]
+            {
+                new CultureInfo("en"),
+                new CultureInfo("gem"),
+                new CultureInfo("vi"),
+            };
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
