@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebApp_Investigate.Intefaces;
+using WebApp_Investigate.Services;
 
 namespace WebApp_Investigate
 {
@@ -24,6 +26,8 @@ namespace WebApp_Investigate
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            //1 Inteface with 2 classes
+            AddOneIntefaceTwoClass(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +56,12 @@ namespace WebApp_Investigate
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+
+        private void AddOneIntefaceTwoClass(IServiceCollection services)
+        {
+            services.AddTransient<ICalculate, CalculateLineService>();
+            services.AddTransient<ICalculate, CalculateTotalAmountService>();
         }
     }
 }
