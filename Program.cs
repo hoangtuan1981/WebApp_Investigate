@@ -18,6 +18,13 @@ namespace WebApp_Investigate
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                //.ConfigureLogging(logging =>
+                //{
+                //    //Remove all the ILoggerProvider instances from the builder
+                //    logging.ClearProviders();
+                //    //Adds the Console logging provider
+                //    logging.AddConsole();
+                //})
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
