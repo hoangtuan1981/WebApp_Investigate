@@ -28,6 +28,8 @@ namespace WebApp_Investigate
             services.AddControllersWithViews();
             //1 Inteface with 2 classes
             AddOneIntefaceTwoClass(services);
+            //1 class with 2 intefaces
+            AddOneClassTwoInteface(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,11 +59,25 @@ namespace WebApp_Investigate
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
-
+        /// <summary>
+        /// 1 inteface with 2 classes
+        /// </summary>
+        /// <param name="services"></param>
         private void AddOneIntefaceTwoClass(IServiceCollection services)
         {
             services.AddTransient<ICalculate, CalculateLineService>();
             services.AddTransient<ICalculate, CalculateTotalAmountService>();
+        }
+        /// <summary>
+        /// 1 class with 2 intefaces
+        /// </summary>
+        /// <param name="services"></param>
+        private void AddOneClassTwoInteface(IServiceCollection services)
+        {
+            //services.AddScoped<IReader, OneClassTwoInterfacesService>();
+            //services.AddScoped<IHelper, OneClassTwoInterfacesService>();
+            services.AddTransient<IReader, OneClassTwoInterfacesService>();
+            services.AddTransient<IHelper, OneClassTwoInterfacesService>();
         }
     }
 }
