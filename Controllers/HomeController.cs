@@ -15,18 +15,25 @@ namespace WebApp_Investigate.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ICalculate _calculate;
         private readonly IEnumerable<ICalculate> _calculates;
+        private readonly IReader _reader;
+        private readonly IHelper _helper;
         public HomeController(ILogger<HomeController> logger, ICalculate calculate, 
-                IEnumerable<ICalculate> calculates)
+                IEnumerable<ICalculate> calculates,
+                IReader reader, IHelper helper)
         {
             _logger = logger;
             _calculate = calculate;
             _calculates = calculates;
+            _reader = reader;
+            _helper = helper;
         }
 
         public IActionResult Index()
         {
             var cal = _calculate.Calculate();
+
             _logger.LogInformation($"Calculate: {cal}");
+            _logger.LogInformation($"IReader == IHelper:  {_reader == _helper}");
             return View();
         }
 
