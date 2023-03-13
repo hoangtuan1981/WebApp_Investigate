@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WebApp_Investigate.Intefaces;
 using WebApp_Investigate.Models;
 
 namespace WebApp_Investigate.Controllers
@@ -12,14 +13,20 @@ namespace WebApp_Investigate.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly ICalculate _calculate;
+        private readonly IEnumerable<ICalculate> _calculates;
+        public HomeController(ILogger<HomeController> logger, ICalculate calculate, 
+                IEnumerable<ICalculate> calculates)
         {
             _logger = logger;
+            _calculate = calculate;
+            _calculates = calculates;
         }
 
         public IActionResult Index()
         {
+            var cal = _calculate.Calculate();
+            _logger.LogInformation($"Calculate: {cal}");
             return View();
         }
 
