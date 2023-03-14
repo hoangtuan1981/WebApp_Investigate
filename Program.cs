@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using WebApp_Investigate.AppExtensions;
 
 namespace WebApp_Investigate
 {
@@ -18,9 +19,25 @@ namespace WebApp_Investigate
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                //.ConfigureLogging(logging =>
+                //{
+                //    //Remove all the ILoggerProvider instances from the builder
+                //    logging.ClearProviders();
+                //    //Adds the Console logging provider
+                //    logging.AddConsole();
+                //})
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                })
+                ////Logging to file
+                //.ConfigureLogging((hostBuilderContext, logging) =>
+                //{
+                //    logging.AddRoundTheCodeFileLogger(options =>
+                //    {
+                //        hostBuilderContext.Configuration.GetSection("Logging").GetSection("RoundTheCodeFile").GetSection("Options").Bind(options);
+                //    });
+                //})
+            ;
     }
 }
