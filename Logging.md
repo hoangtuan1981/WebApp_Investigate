@@ -32,6 +32,9 @@ Logging --> LogLevel: set for all providers.
 **Disable logging**
 "WebApp_Investigate.Controllers": "None" --> disable logging in controllers namespace.
 
+**Logging to file**
+https://www.roundthecode.com/dotnet/create-your-own-logging-provider-to-log-to-text-files-in-net-core?utm_source=youtube&utm_medium=referral&utm_campaign=I3tlCn5J9pA+-+video+content+%28more+information%29
+
 **log4net**
 Link: https://github.com/scottluskcis/log4net-netcore-example
 The output of the log file is placed in Log4NetInCoreExampleLogFile.log in the bin folder when you run the application
