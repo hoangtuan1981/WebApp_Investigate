@@ -15,18 +15,25 @@ namespace WebApp_Investigate.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ICalculate _calculate;
         private readonly IEnumerable<ICalculate> _calculates;
+        public IServiceProvider _provider { get; set; }
         public HomeController(ILogger<HomeController> logger, ICalculate calculate, 
-                IEnumerable<ICalculate> calculates)
+                IEnumerable<ICalculate> calculates,
+                IServiceProvider provider)
         {
             _logger = logger;
             _calculate = calculate;
             _calculates = calculates;
+            _provider = provider;
         }
 
         public IActionResult Index()
         {
             var cal = _calculate.Calculate();
             _logger.LogInformation($"Calculate: {cal}");
+
+            //Create an instance of ISomeService.
+            var injectedService = _provider.GetService(typeof(ISomeService));
+
             return View();
         }
 

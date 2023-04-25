@@ -62,6 +62,7 @@ namespace WebApp_Investigate
         {
             services.AddTransient<ICalculate, CalculateLineService>();
             services.AddTransient<ICalculate, CalculateTotalAmountService>();
+            services.AddTransient<ISomeService, ServiceImplementation>();
         }
     }
 }
