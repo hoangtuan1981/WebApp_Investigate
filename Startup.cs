@@ -10,6 +10,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebApp_Investigate.Intefaces;
 using WebApp_Investigate.Services;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
+using Microsoft.Extensions.Caching.Distributed;
+using System.Text;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Diagnostics;
+using System.IO;
 
 namespace WebApp_Investigate
 {
@@ -30,11 +37,29 @@ namespace WebApp_Investigate
             AddOneIntefaceTwoClass(services);
             //1 class with 2 intefaces
             AddOneClassTwoInteface(services);
+
+            //from Microsoft.Extensions.Caching.StackExchangeRedis
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = "localhost";
+                options.InstanceName = "SampleInstance";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+            IHostApplicationLifetime lifetime, IDistributedCache cache)
         {
+            //app.UseSeriLog();
+            lifetime.ApplicationStarted.Register(() =>
+            {
+                var currentTimeUTC = DateTime.UtcNow.ToString();
+                byte[] encodedCurrentTimeUTC = Encoding.UTF8.GetBytes(currentTimeUTC);
+                var options = new DistributedCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromSeconds(20));
+                cache.Set("cachedTimeUTC", encodedCurrentTimeUTC, options);
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -43,6 +68,37 @@ namespace WebApp_Investigate
             {
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+
+                #region "Custom Exception"
+
+                ////app.UseExceptionHandler("/error");
+                //app.UseExceptionHandler(errorApp =>
+                //{
+                //    errorApp.Run(async context =>
+                //    {
+                //        context.Response.StatusCode = 500;
+                //        context.Response.ContentType = "text/html";
+
+                //        await context.Response.WriteAsync("<html lang=\"en\"><body>\r\n");
+                //        await context.Response.WriteAsync("ERROR!<br><br>\r\n");
+
+                //        var exceptionHandlerPathFeature =
+                //            context.Features.Get<IExceptionHandlerPathFeature>();
+
+                //        if (exceptionHandlerPathFeature?.Error is FileNotFoundException)
+                //        {
+                //            await context.Response.WriteAsync(
+                //                                      "File error thrown!<br><br>\r\n");
+                //        }
+
+                //        await context.Response.WriteAsync(
+                //                                      "<a href=\"/\">Home</a><br>\r\n");
+                //        await context.Response.WriteAsync("</body></html>\r\n");
+                //        await context.Response.WriteAsync(new string(' ', 512));
+                //    });
+                //});
+
+                #endregion "Custom Exception"
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
@@ -79,5 +135,6 @@ namespace WebApp_Investigate
             services.AddTransient<IReader, OneClassTwoInterfacesService>();
             services.AddTransient<IHelper, OneClassTwoInterfacesService>();
         }
+
     }
 }

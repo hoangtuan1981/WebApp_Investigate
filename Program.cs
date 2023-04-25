@@ -38,6 +38,7 @@ namespace WebApp_Investigate
                 //        hostBuilderContext.Configuration.GetSection("Logging").GetSection("RoundTheCodeFile").GetSection("Options").Bind(options);
                 //    });
                 //})
+                
             ;
     }
 }
