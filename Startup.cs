@@ -38,27 +38,39 @@ namespace WebApp_Investigate
             //1 class with 2 intefaces
             AddOneClassTwoInteface(services);
 
+            //Cache
+            //https://github.com/dotnet/AspNetCore.Docs/blob/main/aspnetcore/performance/caching/distributed/samples/6.x/DistCacheSample/Program.cs
             //from Microsoft.Extensions.Caching.StackExchangeRedis
+            //services.AddStackExchangeRedisCache(options =>
+            //{
+            //    options.Configuration = builder.Configuration.GetConnectionString("MyRedisConStr");
+            //    options.InstanceName = "SampleInstance";
+            //});
+            var host = "localhost";//"172.0.0.1";
+            var post = "6379";
             services.AddStackExchangeRedisCache(options =>
             {
-                options.Configuration = "localhost";
-                options.InstanceName = "SampleInstance";
+                options.Configuration = $"{host}:{post}";
+                //options.InstanceName = "SampleInstance";
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-            IHostApplicationLifetime lifetime, IDistributedCache cache)
+            IHostApplicationLifetime lifetime)//, IDistributedCache cache)
         {
-            //app.UseSeriLog();
-            lifetime.ApplicationStarted.Register(() =>
-            {
-                var currentTimeUTC = DateTime.UtcNow.ToString();
-                byte[] encodedCurrentTimeUTC = Encoding.UTF8.GetBytes(currentTimeUTC);
-                var options = new DistributedCacheEntryOptions()
-                    .SetSlidingExpiration(TimeSpan.FromSeconds(20));
-                cache.Set("cachedTimeUTC", encodedCurrentTimeUTC, options);
-            });
+            ////app.UseSeriLog();
+            ////Config for distribute cache.
+            //lifetime.ApplicationStarted.Register(() =>
+            //{
+            //    var currentTimeUTC = DateTime.UtcNow.ToString();
+            //    byte[] encodedCurrentTimeUTC = Encoding.UTF8.GetBytes(currentTimeUTC);
+            //    var options = new DistributedCacheEntryOptions()
+            //        .SetSlidingExpiration(TimeSpan.FromSeconds(20));
+            //    cache.Set("cachedTimeUTC", encodedCurrentTimeUTC, options);
+
+            //});
 
             if (env.IsDevelopment())
             {
