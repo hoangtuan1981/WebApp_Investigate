@@ -6,7 +6,9 @@ làm sao đề thiết kế .net api dependency inversion cho trường hợp n�
 DIWithFactoryPatternController.cs 
 Declare interface: 
 1. IShippingService.cs, CarShippingService.cs, and FedexShippingService.cs
-2. Thread.Sleep(): blocking main thread.
+2. Configuration CarShippingService and FedexShippingService in program.cs: It's important
+builder.Services.AddTransient<FedexShippingService>();
+builder.Services.AddTransient<CarShippingService>();
 
 **project:**
 InvestWebAPI
