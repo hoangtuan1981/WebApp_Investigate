@@ -12,6 +12,6 @@ TestsController.cs
 2. Thread.Sleep(): blocking main thread.
 
 **project:**
-webapi_investigate
+InvestWebAPI
 
 http://localhost:5067/swagger/index.html

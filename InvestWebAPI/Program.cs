@@ -1,9 +1,21 @@
+using InvestWebAPI.Intefaces;
+using InvestWebAPI.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers(); // Add this to register MVC controllers
 builder.Services.AddEndpointsApiExplorer(); // Register the OpenAPI/Swagger service
 builder.Services.AddSwaggerGen(); // Register Swagger generator
+
+//Error: neu dang ky nhu vay thì se tra ra null
+//builder.Services.AddTransient<IShippingService, FedexShippingService>();
+//builder.Services.AddTransient<IShippingService, CarShippingService>();
+//Correct
+builder.Services.AddTransient<FedexShippingService>();
+builder.Services.AddTransient<CarShippingService>();
+builder.Services.AddSingleton<IShippingServiceFactory, ShippingServiceFactory>();
+
 
 var app = builder.Build();
 
