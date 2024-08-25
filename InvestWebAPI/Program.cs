@@ -8,7 +8,7 @@ builder.Services.AddControllers(); // Add this to register MVC controllers
 builder.Services.AddEndpointsApiExplorer(); // Register the OpenAPI/Swagger service
 builder.Services.AddSwaggerGen(); // Register Swagger generator
 
-//Error: neu dang ky nhu vay th� se tra ra null
+//Error: neu dang ky nhu vay thi se tra ra null neu dung factory de get service
 //builder.Services.AddTransient<IShippingService, FedexShippingService>();
 //builder.Services.AddTransient<IShippingService, CarShippingService>();
 //Correct
